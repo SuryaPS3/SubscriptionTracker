@@ -10,3 +10,4 @@ COPY . .
 
 CMD["npm", "run", "dev"]
 
+Expose PORT:3000
