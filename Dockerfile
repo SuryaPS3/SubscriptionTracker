@@ -6,8 +6,12 @@ COPY package*.json ./
 
 RUN npm install
 
+# Copy application code
 COPY . .
 
 CMD ["npm", "run", "start"]
 
-EXPOSE 3000
+# Use ARG to make port configurable at build time
+ARG PORT=3000
+EXPOSE $PORT
+

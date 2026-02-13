@@ -1,13 +1,13 @@
 import express from 'express';
-
+import { PORT } from './config/env.js';
 const app = express();
 
 app.get('/',(req,res)=>{
     res.send("Welcome to the Subscription Tracker");
 })
 
-app.listen(3000,()=>{
-    console.log("Server started on https://localhost:3000");
+app.listen(PORT,()=>{
+    console.log(`Server started on https://localhost:${PORT}`);
 })
 
 export default app;
