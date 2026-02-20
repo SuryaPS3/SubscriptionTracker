@@ -17,6 +17,9 @@ app.get('/',(req,res)=>{
 app.use(express.json());
 // Middleware to parse cookies and allows us to access cookies via req.cookies
 app.use(cookieParser());
+// Middleware to parse URL-encoded bodies (from HTML forms)
+app.use(express.urlencoded({extended:false})); 
+// Routes
 app.use('/users',userRouter);
 app.use('/subscription', subRouter);
 app.use('/auth', authRouter);
