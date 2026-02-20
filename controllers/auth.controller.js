@@ -46,14 +46,49 @@ export const signUp = async (req,res,next)=>{
                     email: savedUser.email
                 },
                 token
-        }});
+        }
+    });
     }catch(error){
         await session.abortTransaction();
         session.endSession();
-        next(error);
+        next(error);//forwarding to our error handling middleware
     }};
 
-export const signIn = (req,res)=>{res.send("Sign in route")};
+export const signIn = async (req,res,next)=>{
+    try{
+        const { email, password } = req.body;
+
+        //check if user exists
+        const user = await User.findOne({email});
+        if(!user){
+            const error = new Error('Email not found');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        //compare password
+        const passCompare = await bcrypt.compare(password, user.password);
+        if(!passCompare){
+            const error = new Error('Invalid password');
+            error.statusCode = 401;
+            throw error;
+        }
+
+        //generate JWT token
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+
+        res.status(200).json({success: true, message: 'User authenticated successfully', data:{
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            },
+            token
+        }});
+    }catch(error){
+        next(error);
+    }
+};
 
 export const signOut = (req,res)=>{res.send("Sign out route")};
 
