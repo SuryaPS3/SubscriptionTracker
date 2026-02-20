@@ -11,11 +11,14 @@ app.get('/',(req,res)=>{
     res.send("Welcome to the Subscription Tracker");
 })
 
+// Inbuild express Middleware to parse JSON bodies
+app.use(express.json());
+
 app.use('/users',userRouter);
 app.use('/subscription', subRouter);
 app.use('/auth', authRouter);
 
-//Error handling middleware
+//Error handling middleware custom
 app.use(errorMiddleware);
 
 app.listen(PORT,()=>{
