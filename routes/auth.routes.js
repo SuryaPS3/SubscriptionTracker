@@ -1,11 +1,11 @@
 import Router from "express";
-
+import { signUp,signIn, loginIn } from "./controllers/auth.controller.js";
 const authRouter = Router();
 
 
-authRouter.get("/sign-up",(req,res)=>{res.send("Sign up route")});
-authRouter.get("/sign-in",(req,res)=>{res.send("Sign in route")});
-authRouter.post("/sign-up",(req,res)=>{res.send("Create a new user")});
-authRouter.post("/sign-in",(req,res)=>{res.send("Authenticate user and return token")});
+authRouter.get("/sign-up",signUp);
+authRouter.get("/sign-in",signIn);
+authRouter.post("/sign-up",signUp);
+authRouter.post("/sign-in",signIn);
 
 export { authRouter };
