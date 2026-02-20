@@ -1,4 +1,8 @@
-export const signUp = (req,res)=>{res.send("Sign up route")};
+export const signUp = (req,res)=>{
+    const { email, password, userName} = req.body;
+    res.send(`Sign up route with email: ${email}, password: ${password}, userName: ${userName}`);
+    
+};
 
 export const signIn = (req,res)=>{res.send("Sign in route")};
 
