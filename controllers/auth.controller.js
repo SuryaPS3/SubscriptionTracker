@@ -52,7 +52,8 @@ export const signUp = async (req,res,next)=>{
         await session.abortTransaction();
         session.endSession();
         next(error);//forwarding to our error handling middleware
-    }};
+    }
+};
 
 export const signIn = async (req,res,next)=>{
     try{
