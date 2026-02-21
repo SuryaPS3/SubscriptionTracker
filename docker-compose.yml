@@ -9,9 +9,25 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-development}
       - PORT=${PORT:-3000}
+      - DB_HOST=mongodb://mongo:27017/subscriptiontracker
     volumes:
       - .:/app
       - /app/node_modules
 # .:/app	Mounts your code live
 # /app/node_modules	Prevents overwrite
     command: npm run dev
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=subscriptiontracker
+
+volumes:
+  mongo_data:
