@@ -7,6 +7,8 @@ import { userRouter } from './routes/user.routes.js';
 import { subRouter } from './routes/subscription.routes.js';
 import { authRouter } from './routes/auth.routes.js';
 import errorMiddleware from "./middlewares/error.middleware.js";
+import { generalLimiter } from './middlewares/simplifiedRateLimit.middleware.js';
+import { cloudflareBotsDetection } from './middlewares/botDetection.middleware.js';
 
 const app = express();
 
@@ -19,6 +21,9 @@ app.get('/',(req,res)=>{
     res.send("Welcome to the Subscription Tracker");
 })
 
+// Security middlewares (apply early)
+app.use(cloudflareBotsDetection);
+app.use(generalLimiter);
 
 // Inbuild express Middleware to parse JSON bodies
 app.use(express.json());
