@@ -1,8 +1,8 @@
 import User from '../models/user.model.js';
 
-const getUsers = async (req, res, next)=>{
+export const getUsers = async (req, res, next)=>{
     try{
-        const users = new User.find();
+        const users = await User.find();
 
         if(!users){
             const error = new Error('No user found');
@@ -16,7 +16,7 @@ const getUsers = async (req, res, next)=>{
     }
 }
 
-const getUserById = async (req, res, next)=>{
+export const getUserById = async (req, res, next)=>{
     try{
         const user = await User.findById(req.params.id).select('-password'); // Exclude password field
         
