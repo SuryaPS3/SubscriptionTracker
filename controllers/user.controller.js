@@ -2,14 +2,14 @@ import User from '../models/user.model.js';
 
 export const getUsers = async (req, res, next)=>{
     try{
-        const users = await User.find();
+        const users = await User.find().select('-password');
 
         if(!users){
             const error = new Error('No user found');
             error.statusCode = 404;
             throw error;
         }
-        res.status(200).json({success: true, data: users}).select('-password'); // Exclude password field
+        res.status(200).json({success: true, data: users}) // Exclude password field
 
     }catch(error){
         next(error);
