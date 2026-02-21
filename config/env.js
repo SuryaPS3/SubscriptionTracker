@@ -7,5 +7,6 @@ export const {
     NODE_ENV,
     JWT_SECRET,
     JWT_EXPIRES_IN,
-    DB_HOST
+    DB_HOST,
+    REDIS_URL
 } = process.env;
