@@ -5,5 +5,5 @@ const authRouter = Router();
 
 authRouter.post("/sign-up", authLimiter, signUp);
 authRouter.post("/sign-in", authLimiter, signIn);
-authRouter.post("/signOut", signOut);
+authRouter.post("/sign-out", signOut);
 export { authRouter };

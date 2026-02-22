@@ -91,10 +91,12 @@ export const signIn = async (req,res,next)=>{
     }
 };
 
-export const signOut = (req,res)=>{res.send("Sign out route")};
+export const signOut = (req,res,next)=>{
+    try{
+        res.clearCookie('token');
+        res.status(200).json({success: true, message: 'User signed out successfully'});
+    }catch(e){
+        next(e);
+    }
+};
 
-export const createUser = (req,res)=>{res.send("Create a new user")};
-
-export const authenticateUser = (req,res)=>{res.send("Authenticate user and return token")};
-
-export const loginIn = (req,res)=>{res.send("Login route")};
