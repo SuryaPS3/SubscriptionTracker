@@ -63,7 +63,7 @@ const subscriptionSchema = new mongoose.Schema({
 })
 
 //Auto-calculate endDate based on frequency
-subscriptionSchema.pre('save', function(next){
+subscriptionSchema.pre('save', function(){
     if(this.isModified('frequency') || this.isModified('startDate')){
         const startDate = this.startDate || new Date();
         let endDate;
@@ -85,7 +85,6 @@ subscriptionSchema.pre('save', function(next){
         }
         this.endDate = endDate;
     }
-    next();
 })
 
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
