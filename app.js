@@ -37,7 +37,7 @@ app.use(express.urlencoded({extended:false}));
 
 // Routes
 app.use('/users',userRouter);
-app.use('/subscription', subRouter);
+app.use('/subscriptions', subRouter);
 app.use('/auth', authRouter);
 
 //Error handling middleware custom

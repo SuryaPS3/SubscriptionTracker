@@ -27,6 +27,6 @@ export const authorize = async (req, res, next) =>{
         next();
     }catch(error){
 
-        res.statusCode(401).json({success: false, message: 'Unauthorized access'});
+        res.status(401).json({success: false, message: 'Unauthorized access'});
     }
 }

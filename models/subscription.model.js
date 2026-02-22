@@ -90,4 +90,4 @@ subscriptionSchema.pre('save', function(next){
 
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
-export { Subscription };
+export default Subscription;
