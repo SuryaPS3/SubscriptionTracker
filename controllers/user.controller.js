@@ -1,4 +1,6 @@
 import User from '../models/user.model.js';
+import Subscription from '../models/subscription.model.js';
+import bcrypt from 'bcryptjs';
 
 export const getUsers = async (req, res, next)=>{
     try{
@@ -71,6 +73,56 @@ export const updateUserProfile = async (req,res,next)=>{
     }
 }
 
+export const changePassword = async (req,res,next)=>{
+    try{
+        //check if user is changing their own password
+        if(req.user._id.toString()!==req.params.id.toString()){
+            const error = new Error('You are not authorized to change this password');
+            error.statusCode = 401;
+            throw error;
+        }
+
+        const {currentPassword, newPassword} = req.body;
+
+        //validate input
+        if(!currentPassword || !newPassword){
+            const error = new Error('Current password and new password are required');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        //get user with password (since we normally exclude it)
+        const user = await User.findById(req.params.id).select('+password');
+        if(!user){
+            const error = new Error('User not found');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        //verify current password
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if(!isMatch){
+            const error = new Error('Current password is incorrect');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        //hash new password and update
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+    
+        //update password
+        await User.findByIdAndUpdate(req.params.id, {password: hashedPassword});
+
+        res.status(200).json({success:true, message: 'Password changed successfully'
+
+        });
+
+       
+    }catch(e){
+        next(e);
+    }
+}
 export const deleteUser = async (req,res,next)=>{
     try{
         //check if user is deleting their own profile
