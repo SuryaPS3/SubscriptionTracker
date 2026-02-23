@@ -70,3 +70,34 @@ export const updateUserProfile = async (req,res,next)=>{
         next(e);
     }
 }
+
+export const deleteUser = async (req,res,next)=>{
+    try{
+        //check if user is deleting their own profile
+        if(req.user._id.toString()!==req.params.id.toString()){
+            const error = new Error('You are not authorized to delete this profile');
+            error.statusCode = 401;
+            throw error;
+        }
+        const userId = req.params.id;
+
+        //First, delete all user's subscriptions
+        await Subscription.deleteMany({userId});
+
+        //Then, delete the user
+        const deletedUser = await User.findByIdAndDelete(userId);
+        
+        if(!deletedUser){
+            const error = new Error('User not found');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        res.status(200).json({
+            success:true,
+            message: 'User and associated subscriptions deleted successfully'
+        })
+    }catch(e){
+        next(e);
+    }
+}
