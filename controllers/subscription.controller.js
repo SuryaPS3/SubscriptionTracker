@@ -1,5 +1,15 @@
 import Subscription from '../models/subscription.model.js';
 
+export const getAllSubscriptions = async (req,res,next)=>{
+    try{
+        const subscriptions = await Subscription.find({userId: req.user._id})
+        .sort({createdAt: -1});
+        res.status(200).json({success:true, count: subscriptions.length, data: subscriptions});
+    }catch(error){
+        next(error);
+    }
+}
+
 export const createSubscription = async (req,res,next)=>{
     try{
         const subscription = await Subscription.create({
@@ -84,3 +94,4 @@ export const deleteSubscription = async (req, res, next) => {
         next(error);
     }
 };
+
