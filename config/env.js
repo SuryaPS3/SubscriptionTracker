@@ -8,5 +8,9 @@ export const {
     JWT_SECRET,
     JWT_EXPIRES_IN,
     DB_HOST,
-    REDIS_URL
+    REDIS_URL,
+    QSTASH_URL,
+    QSTASH_TOKEN,
+    QSTASH_CURRENT_SIGNING_KEY,
+    QSTASH_NEXT_SIGNING_KEY
 } = process.env;

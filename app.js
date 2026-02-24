@@ -9,6 +9,7 @@ import { authRouter } from './routes/auth.routes.js';
 import errorMiddleware from "./middlewares/error.middleware.js";
 import { generalLimiter } from './middlewares/simplifiedRateLimit.middleware.js';
 import { cloudflareBotsDetection } from './middlewares/botDetection.middleware.js';
+import { workflowRouter } from './routes/workflow.routes.js';
 
 const app = express();
 
@@ -36,9 +37,10 @@ app.use(express.urlencoded({extended:false}));
 
 
 // Routes
+app.use('/auth', authRouter);
 app.use('/users',userRouter);
 app.use('/subscriptions', subRouter);
-app.use('/auth', authRouter);
+app.use('/workflows', workflowRouter);
 
 //Error handling middleware custom
 app.use(errorMiddleware);

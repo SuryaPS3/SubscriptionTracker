@@ -8,9 +8,11 @@
     "dev": " npx nodemon app.js"
   },
   "dependencies": {
+    "@upstash/workflow": "^1.1.1",
     "bcryptjs": "^3.0.3",
     "connect-redis": "^9.0.0",
     "cookie-parser": "~1.4.4",
+    "dayjs": "^1.11.19",
     "debug": "~2.6.9",
     "dotenv": "^17.3.1",
     "express": "^4.22.1",
