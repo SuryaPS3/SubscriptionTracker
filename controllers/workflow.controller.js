@@ -17,18 +17,18 @@ export const sendReminders = serve(async (context) => {
     const renewalDate = dayjs(subscription.renewalDate);
 
     // Check if renewal date is within the next 3 days
-    if(renewalDate.diff(dayjs(), 'day') <= 3){
-        // Send reminder email logic here
-        console.log(`Sending reminder for subscription ${subscription._id} to user ${subscription.userId.email}`);
+    if(renewalDate.isBefore(dayjs())){
+        console.log(`Subscription ${subscriptionId} has already renewed or expired. No reminders will be sent.`);
         return;
     }
 
     for(const daysBefore of Reminders){
-        if(renewalDate.diff(dayjs(), 'day') === daysBefore){
-            // Send reminder email logic here
-            console.log(`Sending reminder for subscription ${subscription._id} to user ${subscription.userId.email} - ${daysBefore} days before renewal`);
-            break;
+        const reminderDate = renewalDate.subtract(daysBefore, 'day');
+        if(reminderDate.isAfter(dayjs())){
+            await sleepUntillReminder(context, `reminder ${daysBefore}days before`, reminderDate);
+            
         }
+        await triggerNextReminder(context, `reminder_${daysBefore}_days`);   
     }
 });
 
@@ -38,6 +38,8 @@ const fetchSubscription = async (context, subscriptionId) => {
     })
 }
 
+
+//helper functions for sleeping until reminder time and triggering next reminder
 const sleepUntillReminder = async (context, label, date) => {
     console.log(`Sleeping until ${label} reminder for subscription ${context.payload.subscriptionId} at ${date.toISOString()}`);
     await context.sleepUntil(label, date.toDate());
